@@ -374,17 +374,27 @@
 
   .carousel {
     margin: 1rem 0;
+    position: relative;
+    padding: 0.75rem;
+    background: var(--paper-2, #f4f1ea);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
   }
 
   .carousel-viewport {
+    position: relative;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     display: flex;
     gap: 1rem;
     border-radius: 4px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--accent-light) transparent;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    cursor: grab;
   }
+
+  .carousel-viewport::-webkit-scrollbar { display: none; }
+  .carousel-viewport:active { cursor: grabbing; }
 
   .carousel-slide {
     flex: 0 0 100%;
@@ -395,12 +405,44 @@
     margin: 0;
   }
 
+  /* Prev / next arrows live in the controls bar (below the slide) so they
+     never overlap slide content. */
+  .carousel-arrow {
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid var(--rule);
+    border-radius: 50%;
+    background: var(--paper);
+    color: var(--accent);
+    font-size: 1.15rem;
+    line-height: 1;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+    padding: 0;
+  }
+
+  .carousel-arrow:hover {
+    background: var(--accent);
+    color: var(--paper);
+    transform: scale(1.05);
+  }
+
   .carousel-controls {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    margin-top: 0.65rem;
+    margin-top: 0.85rem;
+    padding: 0 0.25rem;
+  }
+
+  .carousel-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
   .carousel-title {
@@ -411,25 +453,40 @@
     color: var(--accent);
   }
 
-  .carousel-buttons {
+  /* Dots */
+  .carousel-dots {
     display: flex;
-    gap: 0.4rem;
+    gap: 0.45rem;
+    align-items: center;
   }
 
-  .carousel-button {
-    width: 2rem;
-    height: 2rem;
-    border: 1px solid var(--rule);
+  .carousel-dot {
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
-    background: var(--paper);
-    color: var(--accent);
-    font: inherit;
-    line-height: 1;
+    background: var(--rule);
+    border: none;
+    padding: 0;
     cursor: pointer;
+    transition: background 0.15s ease, transform 0.15s ease;
   }
 
-  .carousel-button:hover {
-    background: var(--accent-light);
+  .carousel-dot.is-active {
+    background: var(--accent);
+    transform: scale(1.35);
+  }
+
+  .carousel-counter {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--ink-2);
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (max-width: 600px) {
+    .carousel-controls { flex-wrap: wrap; row-gap: 0.6rem; }
+    .carousel-arrow { width: 2rem; height: 2rem; font-size: 1rem; }
   }
 
   .section-close-block {
@@ -528,6 +585,8 @@
   .team-card {
     border-top: 2px solid var(--accent);
     padding-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
   }
 
   .team-name {
@@ -551,6 +610,24 @@
     font-size: 0.875rem;
     color: var(--ink-2);
     line-height: 1.7;
+  }
+
+  .team-photo {
+    margin-top: auto;
+    padding-top: 1.5rem;
+  }
+
+  .team-photo img {
+    width: 100%;
+    height: 360px;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    border-radius: 4px;
+  }
+
+  @media (max-width: 600px) {
+    .team-photo img { height: 320px; }
   }
 
   /* ── NARRATIVE SKETCH ── */
@@ -1009,7 +1086,7 @@
           <br><br>
           The film opens with colour as cultural language — Holi, classical dance, a child's first brushstrokes. It then names the harm: synthetic dyes poisoning water bodies, stripping dignity from textile workers, destroying ecosystems. It closes with the founders' vision of a textile industry that restores its relationship with nature.
           <br><br>
-          The venture was supported by Social Alpha.
+          The venture is supported by Social Alpha.
         </div>
         <div class="asset-row">
           <div class="asset-slot">
@@ -1068,7 +1145,7 @@
           B-Moat tracked down the hosting trail, recovered access through multiple owners, rebuilt the site on Framer, worked with the YMC team and partner organisations through multiple rounds of review, delivered a functional site, and concluded the engagement with a formal knowledge transfer session — ensuring the YMC team could run the site independently, without ongoing dependence on us.
         </div>
         <div class="work-relevance">
-          <strong>What this proves:</strong> We know how to work with mission-driven organisations — multiple stakeholders, fragmented infrastructure, tight resources. We stay patient. We stay structured. We deliver. The Saamuhika Shakti project involves coordinating across twelve partner organisations — this is a familiar environment for us.
+          <strong>What this proves:</strong> We know how to work with mission-driven organisations — multiple stakeholders, fragmented infrastructure, tight resources. We stay patient. We stay structured. We deliver. The Saamuhika Shakti project involves coordinating across six partner organisations across the textile waste value chain — BBC Media Action, Circular Apparel Innovation Factory (CAIF), Enviu, Hasiru Dala, Sambhav Foundation and Social Alpha. This is a familiar environment for us.
         </div>
       </div>
     </div>
@@ -1174,9 +1251,11 @@
           </div>
           <div class="carousel-controls">
             <div class="carousel-title">ISM / Ecoterra slides</div>
-            <div class="carousel-buttons">
-              <button class="carousel-button" type="button" data-carousel-prev aria-label="Previous ISM or Ecoterra slide">‹</button>
-              <button class="carousel-button" type="button" data-carousel-next aria-label="Next ISM or Ecoterra slide">›</button>
+            <div class="carousel-dots" data-carousel-dots aria-label="Slide navigation"></div>
+            <div class="carousel-nav">
+              <div class="carousel-counter" data-carousel-counter>1 / 4</div>
+              <button class="carousel-arrow prev" type="button" data-carousel-prev aria-label="Previous ISM or Ecoterra slide">‹</button>
+              <button class="carousel-arrow next" type="button" data-carousel-next aria-label="Next ISM or Ecoterra slide">›</button>
             </div>
           </div>
         </div>
@@ -1202,9 +1281,11 @@
           </div>
           <div class="carousel-controls">
             <div class="carousel-title">Problem / solution slides</div>
-            <div class="carousel-buttons">
-              <button class="carousel-button" type="button" data-carousel-prev aria-label="Previous problem or solution slide">‹</button>
-              <button class="carousel-button" type="button" data-carousel-next aria-label="Next problem or solution slide">›</button>
+            <div class="carousel-dots" data-carousel-dots aria-label="Slide navigation"></div>
+            <div class="carousel-nav">
+              <div class="carousel-counter" data-carousel-counter>1 / 2</div>
+              <button class="carousel-arrow prev" type="button" data-carousel-prev aria-label="Previous problem or solution slide">‹</button>
+              <button class="carousel-arrow next" type="button" data-carousel-next aria-label="Next problem or solution slide">›</button>
             </div>
           </div>
         </div>
@@ -1251,7 +1332,7 @@
     <div class="deliverable-item">
       <div class="deliverable-label">Deliverable 03</div>
       <div class="deliverable-title">Illustrated animation video</div>
-      <div class="deliverable-proof">End-to-end video production — scripting, shooting, audio, edit. Demonstrated: Microbeworks Scientific film for H&M GCA. Motion graphics capability available in-studio.</div>
+      <div class="deliverable-proof">End-to-end video production — scripting, shooting, audio, edit. Demonstrated: Microbeworks Scientific film for H&MF GCA. Motion graphics capability available in-studio.</div>
     </div>
     <div class="deliverable-item">
       <div class="deliverable-label">Deliverable 04</div>
@@ -1315,7 +1396,7 @@
     <li>
       <div>
         <div class="spine-chapter">What the collective built</div>
-        <div class="spine-body">The Saamuhika Shakti intervention — CAIF, Hasiru Dala, Social Alpha, the button story, the DWCC operators, the collection drives. Told as a system map, not a list of activities. How each partner owned a node in the chain. What changed when they worked together.</div>
+        <div class="spine-body">The Saamuhika Shakti intervention — CAIF, Hasiru Dala, Social Alpha, Social Button, the DWCC operators, the collection drives. Told as a system map, not a list of activities. How each partner owned a node in the chain. What changed when they worked together.</div>
       </div>
     </li>
     <li>
@@ -1345,6 +1426,9 @@
       <div class="team-bio">
         Shiv leads client strategy, UX direction, and web development at B-Moat. He is the ideation partner on illustration and concept work, the primary point of contact through the engagement, and the person who will hold the narrative brief in every creative decision. He co-built Creators of Products, a 23-country product community, and brings a community-builder's instinct for understanding what a collective of diverse actors needs to communicate coherently.
       </div>
+      <div class="team-photo">
+        <img src="images/Shivkumar.png" alt="Shivkumar photo">
+      </div>
     </div>
     <div class="team-card">
       <div class="team-name">Sujay</div>
@@ -1352,17 +1436,11 @@
       <div class="team-bio">
         Sujay leads illustration, copywriting, and brand work at B-Moat. He wrote the Microbeworks script, designed the Earthworks brand voice, and illustrated the Kempegowda piece. He works at the intersection of writing and image — which is exactly where a 20-page visual report lives. His copy approach: find the most honest, precise version of what needs to be said, then strip everything that doesn't earn its place on the page.
       </div>
-    </div>
-  </div>
-
-    <div class="asset-row">
-      <div class="asset-slot">
-        <img src="images/Shivkumar.png" alt="Shivkumar photo">
-      </div>
-      <div class="asset-slot">
+      <div class="team-photo">
         <img src="images/Sujay.png" alt="Sujay Hegde photo">
       </div>
     </div>
+  </div>
 </section>
 
 <!-- ══════════════════════════════════════════════ CLOSING -->
@@ -1409,6 +1487,38 @@
     const slides = Array.from(carousel.querySelectorAll('.carousel-slide'));
     const previous = carousel.querySelector('[data-carousel-prev]');
     const next = carousel.querySelector('[data-carousel-next]');
+    const dotsContainer = carousel.querySelector('[data-carousel-dots]');
+    const counter = carousel.querySelector('[data-carousel-counter]');
+
+    // Build dots
+    if (dotsContainer) {
+      slides.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.className = 'carousel-dot' + (i === 0 ? ' is-active' : '');
+        dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+        dot.addEventListener('click', () => {
+          viewport.scrollTo({
+            left: slides[i].offsetLeft - slides[0].offsetLeft,
+            behavior: 'smooth'
+          });
+        });
+        dotsContainer.appendChild(dot);
+      });
+    }
+
+    const updateState = () => {
+      const current = Math.round(viewport.scrollLeft / viewport.clientWidth);
+      const clamped = Math.max(0, Math.min(current, slides.length - 1));
+      if (dotsContainer) {
+        dotsContainer.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+          dot.classList.toggle('is-active', i === clamped);
+        });
+      }
+      if (counter) {
+        counter.textContent = (clamped + 1) + ' / ' + slides.length;
+      }
+    };
 
     const scrollToSlide = (direction) => {
       const current = Math.round(viewport.scrollLeft / viewport.clientWidth);
@@ -1421,6 +1531,11 @@
 
     previous.addEventListener('click', () => scrollToSlide(-1));
     next.addEventListener('click', () => scrollToSlide(1));
+    viewport.addEventListener('scroll', () => {
+      window.requestAnimationFrame(updateState);
+    });
+
+    updateState();
   });
 </script>
 
